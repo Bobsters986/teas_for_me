@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :subscription do
-    title { "MyString" }
-    price { 1.5 }
-    status { 1 }
+    title { Faker::Fantasy::Tolkien.poem }
+    price { Faker::Number.decimal(l_digits: 2) }
     frequency { 1 }
   end
 end
