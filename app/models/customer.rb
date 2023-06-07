@@ -3,5 +3,6 @@ class Customer < ApplicationRecord
   validates_uniqueness_of :email
 
   has_many :subscriptions, dependent: :destroy
-  has_many :teas, through: :subscriptions
+  has_many :subscription_teas, through: :subscriptions
+  has_many :teas, through: :subscription_teas
 end

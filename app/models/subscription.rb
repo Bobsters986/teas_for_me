@@ -6,5 +6,6 @@ class Subscription < ApplicationRecord
   enum frequency: [:weekly, :monthly, :quarterly]
 
   belongs_to :customer
-  belongs_to :tea
+  has_many :subscription_teas, dependent: :destroy
+  has_many :teas, through: :subscription_teas
 end
