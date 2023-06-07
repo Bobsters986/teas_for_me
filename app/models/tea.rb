@@ -4,6 +4,7 @@ class Tea < ApplicationRecord
   validates :title, presence: true, uniqueness: true
   validates :description, presence: true
 
-  has_many :subscriptions, dependent: :destroy
+  has_many :subscription_teas, dependent: :destroy
+  has_many :subscriptions, through: :subscription_teas
   has_many :customers, through: :subscriptions
 end
