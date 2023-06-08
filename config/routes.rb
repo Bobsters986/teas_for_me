@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :customers, only: [] do
         get '/subscriptions', to: 'customers/subscriptions#index'
+        post '/subscriptions', to: 'customers/subscriptions#create'
       end
     end
   end
