@@ -16,10 +16,22 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     end
   end
 
+  def update
+    customer = Customer.find(params[:customer_id])
+    subscription = Subscription.find(params[:id])
+
+    if subscription.update(subscription_params)
+      update_subscription_teas(subscription)
+      render json: SubscriptionSerializer.new(subscription), status: 200
+    else
+      render json: { errors: subscription.errors.full_messages.join(', ') }, status: 400
+    end
+  end
+
   private
 
   def subscription_params
-    params.permit(:title, :price, :status, :frequency)
+    params.permit(:title, :price, :status, :frequency, :customer_id, :teas)
   end
 
   def create_subscription_teas(subscription)
@@ -31,4 +43,13 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
       end
     end
   end
+
+  def update_subscription_teas(subscription)
+    subscription.subscription_teas.destroy_all
+    create_subscription_teas(subscription)
+  end
+
+  # def delete_subscription_teas(subscription)
+  #   subscription.subscription_teas.destroy_all
+  # end
 end
