@@ -21,7 +21,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     subscription = Subscription.find(params[:id])
 
     if subscription.update(subscription_params)
-      update_subscription_teas(subscription)
+      create_subscription_teas(subscription)
       render json: SubscriptionSerializer.new(subscription), status: 200
     else
       render json: { errors: subscription.errors.full_messages.join(', ') }, status: 400
@@ -39,15 +39,15 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
       tea = Tea.find(tea_id)
 
       if !tea.nil?
-        SubscriptionTea.create!(tea: tea, subscription: subscription)
+        SubscriptionTea.find_or_create_by(subscription: subscription, tea: tea)
       end
     end
   end
 
-  def update_subscription_teas(subscription)
-    subscription.subscription_teas.destroy_all
-    create_subscription_teas(subscription)
-  end
+  # def update_subscription_teas(subscription)
+  #   subscription.subscription_teas.destroy_all
+  #   create_subscription_teas(subscription)
+  # end
 
   # def delete_subscription_teas(subscription)
   #   subscription.subscription_teas.destroy_all
