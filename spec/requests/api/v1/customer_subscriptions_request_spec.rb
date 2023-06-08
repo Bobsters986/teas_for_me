@@ -34,8 +34,8 @@ RSpec.describe 'Customer Subscriptions API' do
         subscriptions = JSON.parse(response.body, symbolize_names: true)
 
         expect(subscriptions[:data].count).to eq(3)
-        expect(subscriptions[:data].sample.keys).to eq([:id, :type, :attributes])
-        expect(subscriptions[:data][0][:attributes].keys).to eq([:title, :price, :status, :frequency, :teas])
+        expect(subscriptions[:data].sample.keys).to eq(%i[id type attributes])
+        expect(subscriptions[:data][0][:attributes].keys).to eq(%i[title price status frequency teas])
         expect(subscriptions[:data][0][:id]).to eq(@subscription1.id.to_s)
         expect(subscriptions[:data][0][:type]).to eq('subscription')
         expect(subscriptions[:data][0][:attributes][:title]).to eq(@subscription1.title)
@@ -60,16 +60,16 @@ RSpec.describe 'Customer Subscriptions API' do
     end
   end
 
-  describe "Customer Subscriptions Create" do
-    context "when successful" do
-      it "creates a new subscription for a customer" do
+  describe 'Customer Subscriptions Create' do
+    context 'when successful' do
+      it 'creates a new subscription for a customer' do
         expect(@customer.subscriptions.count).to eq(3)
 
         subscription_params = {
-          title: "Tea-licious Subscription",
+          title: 'Tea-licious Subscription',
           price: 10.00,
-          status: "active",
-          frequency: "monthly",
+          status: 'active',
+          frequency: 'monthly',
           teas: [@tea_1.id, @tea_2.id]
         }
 
@@ -78,7 +78,7 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(response).to be_successful
 
         subscription = JSON.parse(response.body, symbolize_names: true)
-        
+
         expect(subscription[:data][:id]).to eq(Subscription.last.id.to_s)
         expect(@customer.subscriptions.count).to eq(4)
         expect(subscription[:data][:type]).to eq('subscription')
@@ -92,10 +92,10 @@ RSpec.describe 'Customer Subscriptions API' do
       end
     end
 
-    context "when unsuccessful" do
-      it "returns a 404 error if customer does not exist" do
+    context 'when unsuccessful' do
+      it 'returns a 404 error if customer does not exist' do
         subscription_params = {
-          title: "Tea-licious Subscription",
+          title: 'Tea-licious Subscription',
           price: 10.00,
           status: 1,
           frequency: 0,
@@ -110,12 +110,12 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(parsed[:errors]).to eq("Couldn't find Customer with 'id'=999")
       end
 
-      it "returns a 400 error if subscription is not created because of invalid params" do
+      it 'returns a 400 error if subscription is not created because of invalid params' do
         subscription_params = {
-          title: "",
-          price: "free",
-          status: "active",
-          frequency: "monthly",
+          title: '',
+          price: 'free',
+          status: 'active',
+          frequency: 'monthly',
           teas: [@tea_1.id, @tea_2.id]
         }
 
@@ -127,12 +127,12 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(parsed[:errors]).to eq("Title can't be blank, Price is not a number")
       end
 
-      it "returns a 404 error if subscription is not created because of invalid tea ids" do
+      it 'returns a 404 error if subscription is not created because of invalid tea ids' do
         subscription_params = {
-          title: "Tea-licious Subscription",
+          title: 'Tea-licious Subscription',
           price: 10.00,
-          status: "active",
-          frequency: "monthly",
+          status: 'active',
+          frequency: 'monthly',
           teas: [@tea_1.id, 888]
         }
 
@@ -147,8 +147,8 @@ RSpec.describe 'Customer Subscriptions API' do
   end
 
   describe "Customer Subscriptions Update, Cancelling a Customer's Subscription" do
-    context "when successful" do
-      it "updates an existing subscription for a customer" do
+    context 'when successful' do
+      it 'updates an existing subscription for a customer' do
         previous_title = @subscription1.title
         previous_price = @subscription1.price
         previous_status = @subscription1.status
@@ -156,14 +156,15 @@ RSpec.describe 'Customer Subscriptions API' do
         previous_tea_count = @subscription1.teas.count
 
         update_params = {
-          title: "Tea-licious Subscription 2 - Electric Boogaloo",
+          title: 'Tea-licious Subscription 2 - Electric Boogaloo',
           price: 9.99,
-          status: "cancelled",
-          frequency: "quarterly",
+          status: 'cancelled',
+          frequency: 'quarterly',
           teas: [@tea_1.id, @tea_2.id, @tea_3.id]
         }
 
-        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers, params: update_params, as: :json
+        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers,
+                                                                                      params: update_params, as: :json
 
         expect(response).to be_successful
 
@@ -185,17 +186,18 @@ RSpec.describe 'Customer Subscriptions API' do
       end
     end
 
-    context "when unsuccessful" do
-      it "returns a 404 error if customer does not exist" do
+    context 'when unsuccessful' do
+      it 'returns a 404 error if customer does not exist' do
         update_params = {
-          title: "Tea-licious Subscription 2 - Electric Boogaloo",
+          title: 'Tea-licious Subscription 2 - Electric Boogaloo',
           price: 9.99,
-          status: "cancelled",
-          frequency: "quarterly",
+          status: 'cancelled',
+          frequency: 'quarterly',
           teas: [@tea_1.id, @tea_2.id, @tea_3.id]
         }
 
-        patch "/api/v1/customers/999/subscriptions/#{@subscription1.id}", headers: @headers, params: update_params, as: :json
+        patch "/api/v1/customers/999/subscriptions/#{@subscription1.id}", headers: @headers, params: update_params,
+                                                                          as: :json
 
         parsed = JSON.parse(response.body, symbolize_names: true)
 
@@ -203,12 +205,12 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(parsed[:errors]).to eq("Couldn't find Customer with 'id'=999")
       end
 
-      it "returns a 404 error if subscription does not exist" do
+      it 'returns a 404 error if subscription does not exist' do
         update_params = {
-          title: "Tea-licious Subscription 2 - Electric Boogaloo",
+          title: 'Tea-licious Subscription 2 - Electric Boogaloo',
           price: 9.99,
-          status: "cancelled",
-          frequency: "quarterly",
+          status: 'cancelled',
+          frequency: 'quarterly',
           teas: [@tea_1.id, @tea_2.id, @tea_3.id]
         }
 
@@ -220,16 +222,17 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(parsed[:errors]).to eq("Couldn't find Subscription with 'id'=999")
       end
 
-      it "returns a 404 error if subscription is not updated because of invalid tea ids" do
+      it 'returns a 404 error if subscription is not updated because of invalid tea ids' do
         subscription_params = {
-          title: "Tea-licious Subscription",
+          title: 'Tea-licious Subscription',
           price: 10.00,
-          status: "cancelled",
-          frequency: "monthly",
+          status: 'cancelled',
+          frequency: 'monthly',
           teas: [@tea_1.id, 888]
         }
 
-        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers, params: subscription_params, as: :json
+        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers,
+                                                                                      params: subscription_params, as: :json
 
         parsed = JSON.parse(response.body, symbolize_names: true)
 
@@ -237,16 +240,17 @@ RSpec.describe 'Customer Subscriptions API' do
         expect(parsed[:errors]).to eq("Couldn't find Tea with 'id'=888")
       end
 
-      it "returns a 400 error if subscription is not updated because of invalid params" do
+      it 'returns a 400 error if subscription is not updated because of invalid params' do
         subscription_params = {
-          title: "",
-          price: "free",
-          status: "cancelled",
-          frequency: "monthly",
+          title: '',
+          price: 'free',
+          status: 'cancelled',
+          frequency: 'monthly',
           teas: [@tea_1.id, @tea_2.id]
         }
 
-        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers, params: subscription_params, as: :json
+        patch "/api/v1/customers/#{@customer.id}/subscriptions/#{@subscription1.id}", headers: @headers,
+                                                                                      params: subscription_params, as: :json
 
         parsed = JSON.parse(response.body, symbolize_names: true)
 

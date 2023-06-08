@@ -38,9 +38,7 @@ class Api::V1::Customers::SubscriptionsController < ApplicationController
     params[:teas].each do |tea_id|
       tea = Tea.find(tea_id)
 
-      if !tea.nil?
-        SubscriptionTea.find_or_create_by(subscription: subscription, tea: tea)
-      end
+      SubscriptionTea.find_or_create_by(subscription:, tea:) unless tea.nil?
     end
   end
 
