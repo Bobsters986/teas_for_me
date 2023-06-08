@@ -7,9 +7,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :customers, only: [] do
-        get '/subscriptions', to: 'customers/subscriptions#index'
-        post '/subscriptions', to: 'customers/subscriptions#create'
-        patch '/subscriptions/:id', to: 'customers/subscriptions#update'
+        resources :subscriptions, only: [:index, :create, :update], module: 'customers'
+        # get '/subscriptions', to: 'customers/subscriptions#index'
+        # post '/subscriptions', to: 'customers/subscriptions#create'
+        # patch '/subscriptions/:id', to: 'customers/subscriptions#update'
       end
     end
   end
