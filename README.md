@@ -58,7 +58,7 @@ This take-home is meant to simulate a task that you might receive during an inte
 
 ### Built With
 
-[![Rails]][Rails-url][![PostgreSQL]][PostgreSQL-url][![RSpec]][RSpec-url][![Shoulda-Matchers]][Shoulda-Matchers-url][![Puma]][Puma-url][![Faker]][Faker-url][![Rubocop]][Rubocop-url]
+[![Rails]][Rails-url][![PostgreSQL]][PostgreSQL-url][![RSpec]][RSpec-url][![JSONAPI-Serializer]][JSONAPI-Serializer-url][![Shoulda-Matchers]][Shoulda-Matchers-url][![Puma]][Puma-url][![Faker]][Faker-url][![Rubocop]][Rubocop-url][![VSCode]][VSCode-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -130,10 +130,12 @@ _Follow the steps below to install and set up this app._
 * Below are example Requests and Responses for each endpoint
 
 ### Create a Subscription for a Customer - Request/Response
+#### POST  '/api/v1/customers/:customer_id/subscriptions'
 <details>
   <summary>Successful</summary>
 
-  
+  ![Post](https://user-images.githubusercontent.com/116703107/244542910-dce473b8-94af-43d6-877c-6fbc6dd2c29c.png)
+
 </details>
 
 <details>
@@ -141,16 +143,26 @@ _Follow the steps below to install and set up this app._
 
   * Customer Doesn't Exist
 
+  ![post_no_user](https://user-images.githubusercontent.com/116703107/244543074-b5118ce3-3c9b-4f80-9ccd-ac72736ecd3e.png)
+
+  * Tea Doesn't Exist
+
+  ![post_no_tea](https://user-images.githubusercontent.com/116703107/244543186-0c570c20-e83a-4959-847f-c88536603bbd.png)
 
   * Missing/Invalid Fields
 
+  ![post_invalid_params](https://user-images.githubusercontent.com/116703107/244543290-f2298632-8857-472d-9b85-2e02a4d0a92f.png)
+
 </details>
+<br />
 
 ### Update or Cancel a Subscription for a Customer - Request/Response
+#### PATCH  '/api/v1/customers/:customer_id/subscriptions/:id'
 <details>
   <summary>Successful</summary>
 
-  
+![patch_successful](https://user-images.githubusercontent.com/116703107/244585017-0da09e5c-355c-4610-87c0-90ad2b7a1ef5.png)
+
 </details>
 
 <details>
@@ -158,18 +170,29 @@ _Follow the steps below to install and set up this app._
 
   * Customer Doesn't Exist
 
+  ![patch_no_user](https://user-images.githubusercontent.com/116703107/244585089-0a48b1cf-ac08-42ef-858a-54f09f994fed.png)
 
   * Subscription Doesn't Exist
 
+  ![patch_no_sub](https://user-images.githubusercontent.com/116703107/244585158-895bb801-5193-4a97-b4be-1f4b8bcf9b81.png)
+
+  * Tea Doesn't Exist
+
+  ![patch_no_tea](https://user-images.githubusercontent.com/116703107/244585222-5d44b43b-38af-4b33-a4d8-83f467e48f07.png)
 
   * Missing/Invalid Fields
 
+  ![patch_invalid_params](https://user-images.githubusercontent.com/116703107/244585281-567d9c3a-506c-4a75-bec8-1448df3c25bb.png)
+
 </details>
+<br />
 
 ### Get all of a Customer's Subscriptions (Active and Cancelled)- Request/Response
+#### GET  '/api/v1/customers/:customer_id/subscriptions'
 <details>
   <summary>Successful</summary>
 
+![get_success](https://user-images.githubusercontent.com/116703107/244585359-070a6fd5-2a36-4b12-9e03-f6ef42b9dfd9.png)
 
 </details>
 
@@ -178,7 +201,8 @@ _Follow the steps below to install and set up this app._
 
   * Customer Doesn't Exist
 
-  
+  ![get_unsuccessful](https://user-images.githubusercontent.com/116703107/244585391-87e6c512-a1dd-45a0-993f-d36758055d0f.png)
+
 </details>
 
 <br />
@@ -239,6 +263,9 @@ Don't forget to give the project a star! Thanks again!
 [Rails]: https://img.shields.io/badge/-Ruby%20on%20Rails-CC0000?logo=ruby-on-rails&logoColor=white&style=for-the-badge
 [Rails-url]: https://rubyonrails.org 
 
+[Ruby]: https://img.shields.io/badge/Ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white
+[Ruby-url]: https://www.ruby-lang.org/en/
+
 [Circle-CI]: https://img.shields.io/circleci/build/github/wise-app-team/wise-app-be/main
 [Circle-url]: https://app.circleci.com/
 
@@ -286,3 +313,9 @@ Don't forget to give the project a star! Thanks again!
 
 [Render]: https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white
 [Render-url]: https://render.com/
+
+[VSCode]: https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white
+[VSCode-url]: https://code.visualstudio.com/
+
+[JSONAPI-Serializer]: https://img.shields.io/badge/-JSON%20API%20Serializer-1E90FF?logo=json&logoColor=white&style=for-the-badge
+[JSONAPI-Serializer-url]: https://github.com/jsonapi-serializer/jsonapi-serializer
